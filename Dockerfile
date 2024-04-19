@@ -1,10 +1,20 @@
 FROM python:latest
 
+# Install required dependencies
 RUN apt-get update && apt-get install -y git
 
-RUN git clone https://github.com/hisxo/gitGraber
-WORKDIR /gitGraber
-RUN pip install -r requirements.txt
+# Clone the gitGraber repository
+RUN git clone https://github.com/threatcode/gitGraber
 
-ENTRYPOINT ["python","gitGraber.py"]
+# Set the working directory
+WORKDIR /gitGraber
+
+# Copy setup.py to the working directory
+COPY setup.py .
+
+# Install the package using setup.py
+RUN python setup.py install
+
+# Set the entrypoint and default command
+ENTRYPOINT ["python", "gitGraber.py"]
 CMD ["--help"]
